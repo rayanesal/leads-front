@@ -1,19 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import api from '@/services/api';
-import { Select, type SelectOption } from '@/components/Select';
+import { Select } from '@/components/Select';
+import { Input } from '@/components/Input';
 import { TableHeader, TableRow } from '@/components/Table';
-
-interface Lead {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  status: 'NEW' | 'IN_CONTACT' | 'CONVERTED';
-  createdAt: string;
-}
+import { getAllLeads, type Lead } from '@/services/list-all';
+import { toggleLeadStatus } from '@/services/toggle-status';
+import { getRowStatusOptions, statusFilterOptions } from '@/shared/constants';
 
 export default function ListAll() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -21,44 +13,10 @@ export default function ListAll() {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [status, setStatus] = useState('');
 
-  const statusFilterOptions: SelectOption[] = useMemo(
-    () => [
-      { value: '', label: 'Todos' },
-      { value: 'NEW', label: 'Novo' },
-      { value: 'IN_CONTACT', label: 'Em Contato' },
-      { value: 'CONVERTED', label: 'Convertido' },
-    ],
-    []
-  );
-
-  const getRowStatusOptions = (current: Lead['status']): SelectOption[] => {
-    if (current === 'NEW') {
-      return [
-        { value: 'NEW', label: 'Novo', disabled: true },
-        { value: 'IN_CONTACT', label: 'Em Contato' },
-        { value: 'CONVERTED', label: 'Convertido' },
-      ];
-    }
-    if (current === 'IN_CONTACT') {
-      return [
-        { value: 'IN_CONTACT', label: 'Em Contato' },
-        { value: 'CONVERTED', label: 'Convertido' },
-      ];
-    }
-    return [
-      { value: 'CONVERTED', label: 'Convertido' },
-    ];
-  };
-
   const fetchLeads = async () => {
     try {
-      const params = new URLSearchParams();
-      if (startDate) params.append('data_from', startDate.toISOString().split('T')[0]);
-      if (endDate) params.append('data_to', endDate.toISOString().split('T')[0]);
-      if (status) params.append('status', status);
-
-      const response = await api.get(`/list-all?${params.toString()}`);
-      setLeads(response.data.leads);
+      const leads = await getAllLeads({ startDate, endDate, status });
+      setLeads(leads);
     } catch (error) {
       toast.error('Erro ao buscar leads.');
       console.error(error);
@@ -67,8 +25,7 @@ export default function ListAll() {
 
   const handleStatusChange = async (id: string, newStatus: 'IN_CONTACT' | 'CONVERTED') => {
     try {
-      await api.get(`/toggle-status?id=${id}&status=${newStatus}`);
-      toast.success('Status do lead atualizado!');
+      await toggleLeadStatus(id, newStatus);
       fetchLeads();
     } catch (error) {
       toast.error('Erro ao atualizar status do lead.');
@@ -84,21 +41,25 @@ export default function ListAll() {
     <div>
       <h2 className="text-3xl font-bold mb-6">Lista de Leads</h2>
       <div className="bg-white p-4 rounded-lg shadow-md mb-6 flex items-center space-x-4">
-        <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2">Data de Início</label>
-          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-        </div>
-        <div>
-          <label className="block text-gray-700 text-sm font-bold mb-2">Data de Fim</label>
-          <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-        </div>
+        <Input
+          id="date_from"
+          label="Data de Início"
+          type="date"
+          value={startDate ? startDate.toISOString().split('T')[0] : ''}
+          onChange={(v) => setStartDate(v ? new Date(v) : null)}
+          containerClassName="mb-0"
+        />
+        <Input
+          id="date_to"
+          label="Data de Fim"
+          type="date"
+          value={endDate ? endDate.toISOString().split('T')[0] : ''}
+          onChange={(v) => setEndDate(v ? new Date(v) : null)}
+          containerClassName="mb-0"
+        />
         <div>
           <label className="block text-gray-700 text-sm font-bold mb-2">Status</label>
-          <Select
-            value={status}
-            onChange={setStatus}
-            options={statusFilterOptions}
-          />
+          <Select value={status} onChange={setStatus} options={statusFilterOptions} />
         </div>
       </div>
       <div className="bg-white p-8 rounded-lg shadow-md">
