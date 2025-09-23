@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export function Sidebar() {
   return (
-    <aside className="w-64 h-screen bg-slate-900 text-slate-100 p-6">
+    <aside className="w-64 bg-slate-900 text-slate-100 p-6">
       <img src="leads_logo.svg" alt="Leads Logo" className="mt-10 w-32 mx-auto mb-10" />
       <h1 className="text-2xl font-bold mb-4">Leads</h1>
       <nav>

@@ -6,17 +6,32 @@ import { TableHeader, TableRow } from '@/components/Table';
 import { getAllLeads, type Lead } from '@/services/list-all';
 import { toggleLeadStatus } from '@/services/toggle-status';
 import { getRowStatusOptions, statusFilterOptions } from '@/shared/constants';
+import { Pagination } from '@/components/Pagination';
+
+const ITEMS_PER_PAGE = 10;
 
 export default function ListAll() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [status, setStatus] = useState('');
+  const [totalLeads, setTotalLeads] = useState(0); // 2. Estado para o total de leads
+  const [currentPage, setCurrentPage] = useState(1); // 3. Estado para a página atual
 
   const fetchLeads = async () => {
     try {
-      const leads = await getAllLeads({ startDate, endDate, status });
+      const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+      const { leads, total } = await getAllLeads({
+        startDate,
+        endDate,
+        status,
+        limit: ITEMS_PER_PAGE,
+        offset,
+      });
+
       setLeads(leads);
+      setTotalLeads(total);
     } catch (error) {
       toast.error('Erro ao buscar leads.');
       console.error(error);
@@ -34,8 +49,12 @@ export default function ListAll() {
   };
 
   useEffect(() => {
-    fetchLeads();
+    setCurrentPage(1);
   }, [startDate, endDate, status]);
+
+  useEffect(() => {
+    fetchLeads();
+  }, [currentPage, startDate, endDate, status]);
 
   return (
     <div>
@@ -86,6 +105,12 @@ export default function ListAll() {
             ))}
           </tbody>
         </table>
+        <Pagination
+          currentPage={currentPage}
+          totalItems={totalLeads}
+          itemsPerPage={ITEMS_PER_PAGE}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </div>
   );

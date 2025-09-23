@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
-    <div className="flex">
+    <div className="flex min-h-screen">
       <Sidebar />
       <main className="flex-1 p-10">
         <Routes>
