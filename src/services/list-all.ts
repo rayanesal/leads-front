@@ -7,14 +7,13 @@ export type Lead = {
   phone: string;
   status: 'NEW' | 'IN_CONTACT' | 'CONVERTED';
   createdAt: string;
-}
+};
 
 type ListAllFilters = {
   startDate: Date | null;
   endDate: Date | null;
   status: string;
-}
-
+};
 
 export const getAllLeads = async (filters: ListAllFilters): Promise<Lead[]> => {
   const params = new URLSearchParams();

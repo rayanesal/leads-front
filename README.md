@@ -6,10 +6,10 @@ Este é o projeto frontend para a aplicação de gerenciamento de Leads, desenvo
 
 Antes de começar, certifique-se de que você tem o seguinte instalado:
 
-  - [Node.js](https://nodejs.org/) (versão 18 ou superior)
-  - [pnpm](https://pnpm.io/installation)
-  - O **backend** da aplicação precisa estar rodando localmente (geralmente em `http://localhost:3333`).
-    - [Backend Repository](https://github.com/rayanesal/leads)
+- [Node.js](https://nodejs.org/) (versão 18 ou superior)
+- [pnpm](https://pnpm.io/installation)
+- O **backend** da aplicação precisa estar rodando localmente (geralmente em `http://localhost:3333`).
+  - [Backend Repository](https://github.com/rayanesal/leads)
 
 ## Como Rodar o Projeto
 
@@ -51,7 +51,7 @@ Agora é só abrir o seu navegador no endereço indicado pelo terminal\.
 
 ## Scripts Disponíveis
 
-  - `pnpm dev`: Inicia o servidor de desenvolvimento.
-  - `pnpm build`: Compila o projeto para produção.
-  - `pnpm lint`: Executa o linter para verificar a qualidade do código.
-  - `pnpm preview`: Inicia um servidor de pré-visualização para visualizar a aplicação em produção.
+- `pnpm dev`: Inicia o servidor de desenvolvimento.
+- `pnpm build`: Compila o projeto para produção.
+- `pnpm lint`: Executa o linter para verificar a qualidade do código.
+- `pnpm preview`: Inicia um servidor de pré-visualização para visualizar a aplicação em produção.

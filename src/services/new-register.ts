@@ -5,7 +5,7 @@ type LeadData = {
   name: string;
   email: string;
   phone: string;
-}
+};
 
 export const newRegister = async (data: LeadData) => {
   const whatsappContact = import.meta.env.VITE_WHATSAPP_CONTACT;

@@ -64,7 +64,7 @@ export default function ListAll() {
       </div>
       <div className="bg-white p-8 rounded-lg shadow-md">
         <table className="min-w-full">
-          <TableHeader titles={["Nome", "Email", "Telefone", "Data", "Status"]} />
+          <TableHeader titles={['Nome', 'Email', 'Telefone', 'Data', 'Status']} />
           <tbody>
             {leads.map((lead) => (
               <TableRow

@@ -5,7 +5,8 @@ type Variant = 'primary' | 'success' | 'danger' | 'secondary';
 type ButtonProps = PropsWithChildren<{
   variant?: Variant;
   className?: string;
-}> & Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'onClick' | 'disabled'>;
+}> &
+  Pick<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'onClick' | 'disabled'>;
 
 const variantClasses: Record<Variant, string> = {
   primary: 'bg-blue-500 hover:bg-blue-700 text-white',
