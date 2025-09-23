@@ -1,73 +1,57 @@
-# React + TypeScript + Vite
+# Leads App - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o projeto frontend para a aplicação de gerenciamento de Leads, desenvolvido com React, Vite e TypeScript.
 
-Currently, two official plugins are available:
+## Pré-requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Antes de começar, certifique-se de que você tem o seguinte instalado:
 
-## React Compiler
+  - [Node.js](https://nodejs.org/) (versão 18 ou superior)
+  - [pnpm](https://pnpm.io/installation)
+  - O **backend** da aplicação precisa estar rodando localmente (geralmente em `http://localhost:3333`).
+    - [Backend Repository](https://github.com/rayanesal/leads)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Como Rodar o Projeto
 
-## Expanding the ESLint configuration
+Siga os passos abaixo para configurar e rodar o ambiente de desenvolvimento.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**1. Clone o repositório**
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone git@github.com:rayanesal/leads-front.git
+cd leads-front
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**2. Crie o arquivo de ambiente**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Crie um novo arquivo chamado `.env` na raiz do projeto e adicione a URL da sua API:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_URL=http://localhost:3333
+VITE_WHATSAPP_CONTACT=5581988888888
 ```
+
+**3. Instale as dependências**
+
+Use o pnpm para instalar todos os pacotes necessários.
+
+```bash
+pnpm install
+```
+
+**4. Inicie o servidor de desenvolvimento**
+
+Este comando irá iniciar a aplicação em modo de desenvolvimento, geralmente na porta `http://localhost:5173`.
+
+```bash
+pnpm dev
+```
+
+Agora é só abrir o seu navegador no endereço indicado pelo terminal\.
+
+## Scripts Disponíveis
+
+  - `pnpm dev`: Inicia o servidor de desenvolvimento.
+  - `pnpm build`: Compila o projeto para produção.
+  - `pnpm lint`: Executa o linter para verificar a qualidade do código.
+  - `pnpm preview`: Inicia um servidor de pré-visualização para visualizar a aplicação em produção.
