@@ -16,5 +16,9 @@ export const newRegister = async (data: LeadData) => {
     toast.success('Lead cadastrado com sucesso!');
   }
 
+  if (response.status === 202) {
+    toast.info('Lead atualizado com sucesso!');
+  }
+
   window.open(`https://wa.me/${whatsappContact}`, '_blank');
 };
