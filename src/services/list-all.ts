@@ -20,6 +20,7 @@ type ListAllFilters = {
 type LeadsResponse = {
   leads: Lead[];
   total: number;
+  itemsByStatus: Record<string, number>;
 };
 
 export const getAllLeads = async (filters: ListAllFilters): Promise<LeadsResponse> => {

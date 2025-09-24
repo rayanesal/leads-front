@@ -5,7 +5,7 @@ import { Input } from '@/components/Input';
 import { TableHeader, TableRow } from '@/components/Table';
 import { getAllLeads, type Lead } from '@/services/list-all';
 import { toggleLeadStatus } from '@/services/toggle-status';
-import { getRowStatusOptions, statusFilterOptions } from '@/shared/constants';
+import { getRowStatusOptions, getStatusLabel, statusFilterOptions } from '@/shared/constants';
 import { Pagination } from '@/components/Pagination';
 
 const ITEMS_PER_PAGE = 10;
@@ -15,14 +15,15 @@ export default function ListAll() {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [status, setStatus] = useState('');
-  const [totalLeads, setTotalLeads] = useState(0); // 2. Estado para o total de leads
-  const [currentPage, setCurrentPage] = useState(1); // 3. Estado para a página atual
+  const [totalLeads, setTotalLeads] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsByStatus, setItemsByStatus] = useState<Record<string, number> | null>(null);
 
   const fetchLeads = async () => {
     try {
       const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
-      const { leads, total } = await getAllLeads({
+      const { leads, total, itemsByStatus } = await getAllLeads({
         startDate,
         endDate,
         status,
@@ -32,6 +33,7 @@ export default function ListAll() {
 
       setLeads(leads);
       setTotalLeads(total);
+      setItemsByStatus(itemsByStatus);
     } catch (error) {
       toast.error('Erro ao buscar leads.');
       console.error(error);
@@ -81,6 +83,12 @@ export default function ListAll() {
           <Select value={status} onChange={setStatus} options={statusFilterOptions} />
         </div>
       </div>
+      {status && itemsByStatus && Object.keys(itemsByStatus).length > 0 && (
+        <div className="bg-white p-3 rounded-md shadow-sm mb-4 text-sm text-gray-700">
+          Total de itens no status <span className="font-semibold">{getStatusLabel(status)}</span>:{' '}
+          {itemsByStatus[status] ?? 0}
+        </div>
+      )}
       <div className="bg-white p-8 rounded-lg shadow-md">
         <table className="min-w-full">
           <TableHeader titles={['Nome', 'Email', 'Telefone', 'Data', 'Status']} />

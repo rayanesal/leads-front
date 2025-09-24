@@ -8,6 +8,14 @@ export const statusFilterOptions: SelectOption[] = [
   { value: 'CONVERTED', label: 'Convertido' },
 ];
 
+export const statusLabelMap: Record<string, string> = {
+  NEW: 'Novo',
+  IN_CONTACT: 'Em Contato',
+  CONVERTED: 'Convertido',
+};
+
+export const getStatusLabel = (status: string) => statusLabelMap[status] ?? status;
+
 export const getRowStatusOptions = (current: Lead['status']): SelectOption[] => {
   if (current === 'NEW') {
     return [
